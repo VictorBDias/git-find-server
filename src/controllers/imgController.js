@@ -7,6 +7,9 @@ const router = express.Router();
 const Image = require('../models/image');
 const multerConfig = require("../config/multer");
 
+//nao esta sendo usado
+//logica foi passada para authController
+
 router.get("/", async (req, res) => {
   const image = await Image.find();
 

@@ -1,5 +1,10 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
+var multiparty = require('multiparty');
+var fs = require('fs'); 
+var path = require('path'); 
+var multer = require('multer'); 
+const multerConfig = require("../config/multer");
 
 const GitUser = require('../models/gitUser');
 const Repos = require('../models/repos');
@@ -22,25 +27,34 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/', async (req, res) => {
+ 
+router.post('/', multer(multerConfig).single("img"), async (req, res) => {
   try{
-  //    var form = new multiparty.Form();
-  //    form.parse(req, function(err, fields, files) {
-  //    console.log(fields.user_name+" "+fields.repos+" "+fields.image);
-  // })
-
+    const { originalname: name, size, key, location: url = "" } = req.file;
     const { user_name, repos } = req.body;
 
-    const gitUser = await GitUser.create({ user_name, repos });
+    const image = await Image.create({
+      name,
+      size,
+      key,
+      url
+    });
+
+    const gitUser = await GitUser.create({ user_name, repos, image });
+
+    console.log(req.file);
 
     await gitUser.save();
 
     return res.send({ gitUser });
-    
-   }catch (err) {console.log(err)
-      return res.status(400).send({ error: 'Erro' });
-   }
+
+  }catch (err) {
+    console.log(err)
+    return res.status(400).send({ error: 'Erro' });
+    }
 });
+
+
 
 router.get('/:gitUserId', async (req, res) => { 
   try {
@@ -81,3 +95,8 @@ router.delete('/:gitUserId', async (req, res) => {
 });
 
 module.exports = app => app.use('/gitUser', router);
+
+  //    var form = new multiparty.Form();
+  //    form.parse(req, function(err, fields, files) {
+  //    console.log(fields.user_name+" "+fields.repos+" "+fields.image);
+  // })

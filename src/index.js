@@ -18,6 +18,6 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "tmp", "uploads")
 
 require('./controllers/authController')(app);
 require('./controllers/reposController')(app);
-require('./controllers/imgController')(app);
+
 
 app.listen(3333);
