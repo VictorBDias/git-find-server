@@ -4,6 +4,7 @@ const GitUserSchema = new mongoose.Schema({
     user_name: {
         type: String,
         require: true,
+        unique: true,
     },
 
     repos:{
@@ -12,7 +13,7 @@ const GitUserSchema = new mongoose.Schema({
     },
 
     image:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.Object,
         require: true,
         ref: 'Image'
     },

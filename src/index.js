@@ -8,16 +8,22 @@ const fs = require('fs');
 const path = require('path'); 
 //require('dotenv/config'); 
 
+
 const app = express();
+path1 = path.resolve(__dirname, "..", "src", "tmp", "uploads");
+//console.log(path1);
+const static = express.static(path1);
 
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cors());
-app.use("/files", express.static(path.resolve(__dirname, "..", "tmp", "uploads")));
+app.use('/files', static);
+
 
 require('./controllers/authController')(app);
 require('./controllers/reposController')(app);
+//require('./controllers/imgController')(app);
 
 
 app.listen(3333);

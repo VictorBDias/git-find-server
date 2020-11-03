@@ -12,7 +12,7 @@ const Image = require('../models/image');
 
 const router = express.Router();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 
 router.get('/', async (req, res) => { 
@@ -36,8 +36,8 @@ router.post('/', multer(multerConfig).single("img"), async (req, res) => {
     const image = await Image.create({
       name,
       size,
-      key,
-      url
+      key: req.file.filename,
+      url: '',
     });
 
     const gitUser = await GitUser.create({ user_name, repos, image });
@@ -56,20 +56,20 @@ router.post('/', multer(multerConfig).single("img"), async (req, res) => {
 
 
 
-router.get('/:gitUserId', async (req, res) => { 
+router.get('/:gitUserName', async (req, res) => { 
   try {
-    const gitUser = await GitUser.findById(req.params.gitUserId).populate();
+    const gitUser = await GitUser.findOne({user_name: req.params.gitUserName}).populate();
     return res.send({ gitUser });
   }catch(err){
       return res.status(400).send({ error: 'Erro' });
     }
 });
 
-router.put('/:gitUserId', async (req, res) => { 
+router.put('/:gitUserName', async (req, res) => { 
   try {
     const { user_name, repos } = req.body;
 
-    const gitUser = await GitUser.findByIdAndUpdate(req.params.gitUserId, {
+    const gitUser = await GitUser.findOneAndUpdate(req.params.gitUserName, {
     user_name,
     repos
     }, {new: true});
@@ -84,9 +84,9 @@ router.put('/:gitUserId', async (req, res) => {
   }
 });
 
-router.delete('/:gitUserId', async (req, res) => { 
+router.delete('/:gitUserName', async (req, res) => { 
   try {
-    await GitUser.findByIdAndRemove(req.params.gitUserId).populate('gitUser');
+    await GitUser.findOneAndRemove(req.params.gitUserName).populate('gitUser');
       
     return res.send();
   }catch(err){
