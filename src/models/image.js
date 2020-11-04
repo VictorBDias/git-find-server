@@ -17,7 +17,7 @@ const ImageSchema = new mongoose.Schema({
 
 ImageSchema.pre("save", function() {
   if (!this.url) {
-    this.url = `http://localhost:3333/files/${this.key}`;
+    this.url = `${APP_URL}/files/${this.key}`;
   }
 });
 
