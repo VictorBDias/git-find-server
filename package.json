@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon",
-    "test": "jest"
+    "test": "jest",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "aws-sdk": "^2.390.0",
