@@ -26,4 +26,4 @@ require('./controllers/reposController')(app);
 //require('./controllers/imgController')(app);
 
 
-app.listen(3333);
+app.listen(process.env.PORT || 3333);
