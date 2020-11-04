@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   return res.json(image);
 });
 
-router.post("/", multer(multerConfig).single("img"), async (req, res) => {
+router.post("/", multer(multerConfig).single("image"), async (req, res) => {
   const { originalname: name, size, key, location: url = "" } = req.file;
 
   const image = await Image.create({

@@ -46,14 +46,24 @@ router.post('/authenticate', async(req, res) => {
     
     user.password = undefined;
 
-    //const token = jwt.sign({id: user.id}, authConfig.secret, {expiresIn: 31104000});
-
     res.send({
         user, 
         token: generateToken({id: user.id})
     });
 
 });
+
+router.get('/:email', async (req, res) => { 
+    try {
+      const user = await User.findOne({email: req.params.email}).populate();
+      return res.send({ user });
+    }catch(err){
+        return res.status(400).send({ error: 'Erro' });
+      }
+  });
+
+
+
 
 
 module.exports = app => app.use('/auth', router);

@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
         select: false
     },
 
+    _admin:{
+        type: String,
+    },
+
     createdAt:{
         type: Date,
         default: Date.now,

@@ -14,7 +14,6 @@ const router = express.Router();
 
 //router.use(authMiddleware);
 
-
 router.get('/', async (req, res) => { 
 
   try {
@@ -28,11 +27,12 @@ router.get('/', async (req, res) => {
 });
 
  
-router.post('/', multer(multerConfig).single("img"), async (req, res) => {
-  try{
-    const { originalname: name, size, key, location: url = "" } = req.file;
-    const { user_name, repos } = req.body;
-
+router.post('/', multer(multerConfig).single("image"), async (req, res) => {
+  
+  const { originalname: name, size, key, location: url = "" } = req.file;
+  const { user_name, repos } = req.body;
+  
+  try{ 
     const image = await Image.create({
       name,
       size,
